@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectNE.Views.OrdersPage"
+             xmlns:vm="clr-namespace:ProjectNE.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" 
+
+             Title="Заказы">
+
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="SkyBlue"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView HorizontalOptions="CenterAndExpand" Padding="5">
+        <StackLayout MaximumWidthRequest="1600" HorizontalOptions="Center" Margin="5" Spacing="10">
+            <SearchBar  Placeholder="Поиск..."  Text="{Binding SearchBarText}" x:DataType="vm:OrdersPageVM" WidthRequest="600">
+                <SearchBar.Behaviors>
+                    <toolkit:EventToCommandBehavior EventName="TextChanged"  Command="{Binding SearchBarTextChangedCommand}"/>
+                </SearchBar.Behaviors>
+            </SearchBar>
+
+            <HorizontalStackLayout Spacing="20" HorizontalOptions="CenterAndExpand" x:DataType="vm:OrdersPageVM">
+                <Button Text="Добавить" Command="{Binding ShowAddFrameCommand}" WidthRequest="150"/>
+                <Button Text="Инфо" Command="{Binding ShowOrderInfoCommand}" WidthRequest="150" IsEnabled="{Binding IsItemSelected}"/>
+                <Button Text="Удалить" Command="{Binding DeleteCommand}" WidthRequest="150" IsEnabled="{Binding IsItemSelected}"/>
+            </HorizontalStackLayout>
+
+            <StackLayout IsVisible="{Binding IsAddFrameVisible}" Spacing="10" Padding="5">
+
+                <DatePicker Date="{Binding Date}" x:DataType="vm:OrdersPageVM" >
+                    <DatePicker.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="DateSelected" Command="{Binding DateChangedCommand}"/>
+                    </DatePicker.Behaviors>
+                </DatePicker>
+                
+                <Entry Text="{Binding Title}" Placeholder="Наименование">
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="TextChanged"  Command="{Binding TextChangedCommand}"/>
+                    </Entry.Behaviors>
+                </Entry>
+                    
+                <Entry Text="{Binding Customer_name}" Placeholder="Клиент" >
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="TextChanged"  Command="{Binding TextChangedCommand}"/>
+                    </Entry.Behaviors>
+                    
+                </Entry>
+                
+                <HorizontalStackLayout Padding="5" Spacing="20">
+                    <Label Text="Тип накладной: " VerticalOptions="Center"/>
+                    <Picker ItemsSource="{Binding TypesOfInvoice}" SelectedItem="{Binding SelectedInvoiceType}"/>
+                </HorizontalStackLayout>
+                
+                <HorizontalStackLayout Spacing="30">
+                    <Entry Text="{Binding Product}" Placeholder="Товар" >
+                        <Entry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="TextChanged"  Command="{Binding TextChangedCommand}"/>
+                        </Entry.Behaviors>
+                    </Entry>
+                    
+                    <Entry Text="{Binding Quantity}" Placeholder="Количество">
+                        <Entry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="TextChanged"  Command="{Binding TextChangedCommand}"/>
+                        </Entry.Behaviors>
+                    </Entry>
+                    
+                    <Entry Text="{Binding Price}" Placeholder="Цена">
+                        <Entry.Behaviors>
+                            <toolkit:EventToCommandBehavior EventName="TextChanged"  Command="{Binding TextChangedCommand}"/>
+                        </Entry.Behaviors>
+                    </Entry>
+                    
+                    <Entry Text="{Binding Sum}" Placeholder="Сумма" IsReadOnly="True" IsVisible="False"/>
+                    
+                    <Button Text="Добавить" Command="{Binding AddProductCommand}" IsEnabled="{Binding IsProductFieldsAreFilled}"/>
+                </HorizontalStackLayout>
+
+                <Label Text="Список товаров" FontSize="22" HorizontalOptions="CenterAndExpand"/>
+                <CollectionView ItemsSource="{Binding OrderItemsList}">
+                    <CollectionView.Header>
+                        <Grid ColumnDefinitions=".4*,.1*,.1*,.1*">
+                            <Label Text="Наименование"/>
+                            <Label Grid.Column="1" Text="Кол-во"/>
+                            <Label Grid.Column="2"  Text="Цена"/>
+                            <Label Grid.Column="3"  Text="Сумма"/>
+                        </Grid>
+                    </CollectionView.Header>
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions=".4*,.1*,.1*,.1*">
+                                <Label  Text="{Binding NAME}"/>
+                                <Label Grid.Column="1" Text="{Binding QUANTITY}"/>
+                                <Label Grid.Column="2" Text="{Binding PRICE}"/>
+                                <Label Grid.Column="3" Text="{Binding SUM}"/>
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    
+                </CollectionView>
+                
+                <Button Text="Записать" Command="{Binding AddCommand}" IsEnabled="{Binding IsOrderFieldsAreFilled}"/>
+            </StackLayout>
+
+
+            <CollectionView EmptyView="Здесь ничего нет..."
+                            ItemsSource="{Binding SearchList}" 
+                            SelectionMode="Single" SelectedItem="{Binding SelectedItem}" 
+                            SelectionChangedCommand="{Binding SelectionChangedCommand}">
+
+                <CollectionView.Header>
+                    <Grid ColumnSpacing="10" RowSpacing="10"  ColumnDefinitions =".1*,.1*,.3*,.3*,.1*" Padding="5">
+                        <Label Grid.Column="0"  Text="ТИП" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"/>
+                        <Label Grid.Column="1"  Text="ДАТА" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"/>
+                        <Label Grid.Column="2"  Text="НАИМЕНОВАНИЕ" FontAttributes="Bold"  HorizontalOptions="CenterAndExpand"/>
+                        <Label Grid.Column="3"  Text="КЛИЕНТ"  FontAttributes="Bold"   HorizontalOptions="CenterAndExpand"/>
+                        <Label Grid.Column="4"  Text="СУММА"  FontAttributes="Bold"   HorizontalOptions="CenterAndExpand"/>
+                    </Grid>
+                </CollectionView.Header>
+
+
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate >
+
+                        <Grid ColumnSpacing="10" RowSpacing="10" Padding="5">
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".1*"/>
+                                <ColumnDefinition Width=".1*"/>
+                                <ColumnDefinition Width=".3*"/>
+                                <ColumnDefinition Width=".3*"/>
+                                <ColumnDefinition Width=".1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0"  Text="{Binding  INVOICE_TYPE}"  HorizontalOptions="CenterAndExpand"/>
+                            <Label Grid.Column="1"  Text="{Binding  DATE, StringFormat='{0:dd.MM.yy}'}" HorizontalOptions="CenterAndExpand"/>
+                            <Label Grid.Column="2"  Text="{Binding  TITLE}" LineBreakMode="TailTruncation" HorizontalOptions="CenterAndExpand" />
+                            <Label Grid.Column="3"  Text="{Binding  CUSTOMER_NAME}"  HorizontalOptions="CenterAndExpand" LineBreakMode="TailTruncation"/>
+                            <Label Grid.Column="4"  Text="{Binding  SUM, StringFormat='{0:#,#.00}'}" HorizontalOptions="CenterAndExpand" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+        </StackLayout>
+    </ScrollView>
+
+
+
+</ContentPage>

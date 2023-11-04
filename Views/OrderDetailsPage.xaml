@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectNE.Views.OrderDetailsPage"
+             xmlns:vm="clr-namespace:ProjectNE.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" 
+
+             >
+        
+    <ScrollView Padding="10" HorizontalOptions="CenterAndExpand">
+        
+        <VerticalStackLayout Spacing="20" Padding="5">
+            <Label Text="ИНФОРМАЦИЯ О ЗАКАЗЕ" FontSize="22" HorizontalOptions="CenterAndExpand"/>
+            
+            <Grid ColumnDefinitions=".3*, .7*" RowDefinitions="*,*,*,*" HorizontalOptions="StartAndExpand" ColumnSpacing="30">
+                <Label Text="Дата: "  VerticalOptions="Center" FontAttributes="Bold" />
+                <Entry Grid.Column="1" x:DataType="vm:OrdersPageVM" Text="{Binding SelectedItem.DATE}" IsReadOnly="True"/>
+
+                <Label Grid.Row="1" Text="Наименование: "  VerticalOptions="Center" FontAttributes="Bold"/>
+                <Entry Grid.Column="1" Grid.Row="1"  x:DataType="vm:OrdersPageVM" Text="{Binding Title}" IsReadOnly="True" />
+                
+                <Label Grid.Row="2" Text="Тип накладной: "  VerticalOptions="Center" FontAttributes="Bold"/>
+                <Entry Grid.Column="1" Grid.Row="2"  x:DataType="vm:OrdersPageVM" Text="{Binding SelectedInvoiceType}" IsReadOnly="True" />
+                
+                <Label Grid.Row="3" Text="Клиент: "   VerticalOptions="Center" FontAttributes="Bold"/>
+                <Entry Grid.Column="1"  Grid.Row="3" x:DataType="vm:OrdersPageVM" Text="{Binding Customer_name}" IsReadOnly="True"/>
+            </Grid>
+            
+            <Label Text="Список товаров" FontSize="22" HorizontalOptions="CenterAndExpand"/>
+
+            <CollectionView EmptyView="Здесь ничего нет..."
+                            ItemsSource="{Binding OrderItemsList}" 
+                            ItemSizingStrategy="MeasureAllItems">
+                
+                <CollectionView.Header>
+                    <Grid ColumnDefinitions=".4*, .1*, .1*, .3*" Padding="5">
+                        <Label Grid.Column="0" Text="Наименование" FontAttributes="Bold" />
+                        <Label Grid.Column="1" Text="Кол-во" FontAttributes="Bold"/>
+                        <Label Grid.Column="2" Text="Цена" FontAttributes="Bold"/>
+                        <Label Grid.Column="3" Text="Сумма" FontAttributes="Bold" HorizontalOptions="Start" HorizontalTextAlignment="Start"/>
+                    </Grid>
+                </CollectionView.Header>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions=".4*, .1*, .1*, .3*" Padding="5">
+                            <Label Grid.Column="0" Text="{Binding NAME}"/>
+                            <Label Grid.Column="1" Text="{Binding QUANTITY}"/>
+                            <Label Grid.Column="2" Text="{Binding PRICE}"/>
+                            <Label Grid.Column="3" Text="{Binding SUM, StringFormat='{0:#,#.00}'}" HorizontalOptions="Start" HorizontalTextAlignment="Start"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label x:DataType="vm:OrdersPageVM" Text="{Binding SelectedItem.SUM, StringFormat='ИТОГО: {0:#,#.00}'}" 
+                   HorizontalOptions="End" FontAttributes="Bold" TextDecorations="Underline" FontSize="20"/>
+            <Button Text="Назад" Command="{Binding GoBackCommand}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

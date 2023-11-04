@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectNE.Views.LoginPage"
+             xmlns:vm="clr-namespace:ProjectNE.ViewModels"
+             x:DataType="vm:LoginPageVM"
+             Title="Login">
+    <VerticalStackLayout Spacing="20">
+        <Label 
+            Text="Авторизация"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            FontSize="24"/>
+        <Entry Placeholder="Введите логин"/>
+        <HorizontalStackLayout>
+            <Entry x:Name="passEntry" Placeholder="Введите логин" IsPassword="{Binding IsPasswordRevealed}" />
+            <Button Text="(o)" Command="{Binding RevealPasswordCommand}"  />
+        </HorizontalStackLayout>
+        <Button Text="Goto main" Command="{Binding GotoMainPageCommand}" />
+        
+    </VerticalStackLayout>
+</ContentPage>

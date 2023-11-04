@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectNE.Views.ReportsPage"
+             xmlns:vm="clr-namespace:ProjectNE.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Отчеты">
+
+    <ScrollView >
+        <StackLayout Spacing="20" Padding="20">
+            <Label Text="Формирование отчета" FontSize="22" HorizontalOptions="Center"/>
+            <!--<HorizontalStackLayout Spacing="20">
+                <Label Text="Выберите за какой период сформировать отчет: " FontSize="20"/>
+                <Picker>
+                    <Picker.Items>
+                        <x:String> Текущий месяц</x:String>
+                        <x:String> Текущий квартал</x:String>
+                        <x:String> Текущий год</x:String>
+                        <x:String> Предыдущий месяц</x:String>
+                        <x:String> Предыдущий квартал</x:String>
+                        <x:String> Предыдущий год</x:String>
+                    </Picker.Items>
+                </Picker>
+            </HorizontalStackLayout>-->
+            
+            <!--Выбор периода-->
+            <HorizontalStackLayout Spacing="10" x:DataType="vm:ReportsPageVM">
+                <Label Text="c " FontSize="20" VerticalOptions="Center"/>
+                <DatePicker Format="dd/MM/yyyy" FontSize="20" Date="{Binding StartDate}">
+                    <DatePicker.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="DateSelected" Command="{Binding DateChangedCommand}"/>
+                    </DatePicker.Behaviors>
+                </DatePicker>
+                
+                <Label Text="по " FontSize="20" VerticalOptions="Center"/>
+                <DatePicker Format="dd/MM/yyyy"  FontSize="20" Date="{Binding EndDate}">
+                    <DatePicker.Behaviors>
+                        <toolkit:EventToCommandBehavior EventName="DateSelected" Command="{Binding DateChangedCommand}"/>
+                    </DatePicker.Behaviors>
+                </DatePicker>
+            </HorizontalStackLayout>
+            <Button Text="Сформировать" Command="{Binding CreateReportCommand}"/>
+            
+            <!--секция с двумя списками. в одном закупки, во втором продажи-->
+            
+            
+
+            <StackLayout Spacing="30"  IsVisible="{Binding IsReportListVisible}" HorizontalOptions="Center">
+                
+                <!--#region Список закупок -->
+                    
+                <Frame BackgroundColor="#ebebeb">
+                    <StackLayout Spacing="30">
+                        <Label Text="Закупки" FontSize="22" HorizontalOptions="Center"/>
+                            <CollectionView ItemsSource="{Binding OrderBuyItemsList}" EmptyView="Здесь ничего нет..." ItemSizingStrategy="MeasureAllItems">
+                        
+                                <CollectionView.Header>
+                                    <Grid ColumnDefinitions=".3*, .2*, .2*, .3*">
+                                        <Label Grid.Column="0" Text="Наименование"/>
+                                        <Label Grid.Column="1" Text="Кол-во"/>
+                                        <Label Grid.Column="2" Text="Цена"/>
+                                        <Label Grid.Column="3" Text="Сумма"/>
+                                    </Grid>
+                                </CollectionView.Header>
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions=".3*, .2*, .2*, .3*">
+                                            <Label Grid.Column="0" Text="{Binding NAME}" MinimumWidthRequest="100"/>
+                                            <Label Grid.Column="1" Text="{Binding QUANTITY}" MinimumWidthRequest="100"/>
+                                            <Label Grid.Column="2" Text="{Binding PRICE}" MinimumWidthRequest="100"/>
+                                            <Label Grid.Column="3" Text="{Binding SUM, StringFormat='{0:#,#.00}'}" MinimumWidthRequest="100"/>
+                                        </Grid>
+
+                                    </DataTemplate>
+                             </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        <Label Text="{Binding BuySum, StringFormat='ИТОГО -{0:#,#.00}'}"  FontSize="20" FontAttributes="Bold" TextDecorations="Underline" HorizontalOptions="End" VerticalOptions="End"/>
+                    </StackLayout>
+                </Frame>
+                <!--#endregion-->
+                
+                <!--#region Список продаж -->
+                    
+                    
+                <Frame BackgroundColor="#ebebeb">
+                    <StackLayout Spacing="30" >
+                        <Label Text="Продажи" FontSize="22" HorizontalOptions="Center"/>
+                    
+                        <CollectionView ItemsSource="{Binding OrderSellItemsList}" EmptyView="Здесь ничего нет..." 
+                                        HorizontalOptions="CenterAndExpand"  ItemSizingStrategy="MeasureAllItems"
+                                        MinimumWidthRequest="400">
+
+                            <CollectionView.Header>
+                                <Grid ColumnDefinitions=".3*, .2*, .2*,.3*">
+                                    <Label Grid.Column="0" Text="Наименование"/>
+                                    <Label Grid.Column="1" Text="Кол-во"/>
+                                    <Label Grid.Column="2" Text="Цена"/>
+                                    <Label Grid.Column="3" Text="Сумма"/>
+                                </Grid>
+                            </CollectionView.Header>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions=".3*, .2*, .2*, .3*">
+                                        <Label Grid.Column="0" Text="{Binding NAME}" MinimumWidthRequest="100"/>
+                                        <Label Grid.Column="1" Text="{Binding QUANTITY}" MinimumWidthRequest="100"/>
+                                        <Label Grid.Column="2" Text="{Binding PRICE}" MinimumWidthRequest="100"/>
+                                        <Label Grid.Column="3" Text="{Binding SUM, StringFormat='{0:#,#.00}'}" MinimumWidthRequest="100"/>
+                                    </Grid>
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <Label Text="{Binding SellSum, StringFormat='ИТОГО +{0:#,#.00}'}"  FontSize="20" FontAttributes="Bold" TextDecorations="Underline" HorizontalOptions="End" VerticalOptions="End"/>
+                    </StackLayout>
+                </Frame>
+                <!--#endregion-->
+            </StackLayout>
+
+                
+            <Label Text="{Binding Income, StringFormat='Прибыль за выбранный период: {0:#,#.00}'}"  
+                    FontSize="22" FontAttributes="Bold" TextDecorations="Underline" 
+                    HorizontalOptions="Center" Margin="0, 30" IsVisible="{Binding IsReportListVisible}"/>
+        
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
