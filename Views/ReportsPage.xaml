@@ -52,7 +52,7 @@
                 <Frame BackgroundColor="#ebebeb">
                     <StackLayout Spacing="30">
                         <Label Text="Закупки" FontSize="22" HorizontalOptions="Center"/>
-                            <CollectionView ItemsSource="{Binding OrderBuyItemsList}" EmptyView="Здесь ничего нет..." ItemSizingStrategy="MeasureAllItems">
+                            <CollectionView ItemsSource="{Binding OrderBuyItemsList}" ItemSizingStrategy="MeasureAllItems">
                         
                                 <CollectionView.Header>
                                     <Grid ColumnDefinitions=".3*, .2*, .2*, .3*">
@@ -87,7 +87,7 @@
                     <StackLayout Spacing="30" >
                         <Label Text="Продажи" FontSize="22" HorizontalOptions="Center"/>
                     
-                        <CollectionView ItemsSource="{Binding OrderSellItemsList}" EmptyView="Здесь ничего нет..." 
+                        <CollectionView ItemsSource="{Binding OrderSellItemsList}" 
                                         HorizontalOptions="CenterAndExpand"  ItemSizingStrategy="MeasureAllItems"
                                         MinimumWidthRequest="400">
 

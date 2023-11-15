@@ -28,7 +28,7 @@
             
             <Label Text="Список товаров" FontSize="22" HorizontalOptions="CenterAndExpand"/>
 
-            <CollectionView EmptyView="Здесь ничего нет..."
+            <CollectionView 
                             ItemsSource="{Binding OrderItemsList}" 
                             ItemSizingStrategy="MeasureAllItems">
                 

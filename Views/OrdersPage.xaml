@@ -15,7 +15,7 @@
                         <VisualState x:Name="Normal" />
                         <VisualState x:Name="Selected">
                             <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="SkyBlue"/>
+                                <Setter Property="BackgroundColor" Value="LightYellow"/>
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
@@ -117,8 +117,7 @@
             </StackLayout>
 
 
-            <CollectionView EmptyView="Здесь ничего нет..."
-                            ItemsSource="{Binding SearchList}" 
+            <CollectionView ItemsSource="{Binding SearchList}"
                             SelectionMode="Single" SelectedItem="{Binding SelectedItem}" 
                             SelectionChangedCommand="{Binding SelectionChangedCommand}">
 
@@ -137,7 +136,7 @@
 
                     <DataTemplate >
 
-                        <Grid ColumnSpacing="10" RowSpacing="10" Padding="5">
+                        <Grid Padding="5">
                             
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width=".1*"/>

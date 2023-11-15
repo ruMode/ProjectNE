@@ -8,7 +8,7 @@ namespace ProjectNE.Models
 {
     public static class Constants
     {
-        public const string DatabaseFilename = "database.db3";
+        private const string DatabaseFilename = "database.db3";
 
         public const SQLite.SQLiteOpenFlags Flags =
         // open the database in read/write mode
@@ -19,7 +19,7 @@ namespace ProjectNE.Models
         SQLite.SQLiteOpenFlags.SharedCache;
 
         public static string DatabasePath =>
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DatabaseFilename);
+        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DatabaseFilename);
 
     }
 }

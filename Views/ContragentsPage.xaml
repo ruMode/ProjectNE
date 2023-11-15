@@ -14,7 +14,7 @@
                         <VisualState x:Name="Normal" />
                         <VisualState x:Name="Selected">
                             <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="SkyBlue"/>
+                                <Setter Property="BackgroundColor" Value="LightYellow"/>
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
@@ -23,8 +23,8 @@
         </Style>
     </ContentPage.Resources>
 
-    <ScrollView HorizontalOptions="CenterAndExpand" Padding="5" >
-        <StackLayout MaximumWidthRequest="1600" HorizontalOptions="Center" Margin="5" Spacing="10">
+    <ScrollView HorizontalOptions="CenterAndExpand" Padding="5"  Margin="20">
+        <StackLayout MinimumWidthRequest="800" HorizontalOptions="Center" Spacing="10">
 
             <SearchBar  Placeholder="Поиск..."  Text="{Binding SearchBarText}" x:DataType="vm:ContragentsPageVM">
                 <SearchBar.Behaviors>
@@ -54,16 +54,14 @@
 
 
 
-            <CollectionView EmptyView="Здесь ничего нет..."
-                            ItemsSource="{Binding SearchList}" 
+            <CollectionView ItemsSource="{Binding SearchList}" 
                             SelectionMode="Single" SelectedItem="{Binding SelectedItem}" 
                             SelectionChangedCommand="{Binding SelectionChangedCommand}">
                 <CollectionView.Header>
-                    <Grid ColumnSpacing="10" RowSpacing="10"  ColumnDefinitions =".1*,.1*,.5*,.1*" Padding="5">
-                        <Label Grid.Column="0"  Text="ID" FontAttributes="Bold"  />
-                        <Label Grid.Column="1"  Text="ДАТА" FontAttributes="Bold" />
-                        <Label Grid.Column="2"  Text="НАИМЕНОВАНИЕ" FontAttributes="Bold" />
-                        <Label Grid.Column="3"  Text="АДРЕС"  FontAttributes="Bold"  />
+                    <Grid ColumnSpacing="10" RowSpacing="10"  ColumnDefinitions =".1*,.5*,.4*" Padding="5">
+                        <Label Grid.Column="0"  Text="ДАТА" FontAttributes="Bold" />
+                        <Label Grid.Column="1"  Text="НАИМЕНОВАНИЕ" FontAttributes="Bold" />
+                        <Label Grid.Column="2"  Text="АДРЕС"  FontAttributes="Bold"  />
                     </Grid>
                 </CollectionView.Header>
                                 
@@ -71,19 +69,17 @@
 
                     <DataTemplate >
 
-                        <Grid ColumnSpacing="10" RowSpacing="10" >
+                        <Grid Padding="6" >
                             <!--BackgroundColor="{Binding SelectedItemBackgroundColor}"-->
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width=".1*"/>
-                                <ColumnDefinition Width=".1*"/>
                                 <ColumnDefinition Width=".5*"/>
-                                <ColumnDefinition Width=".1*"/>
+                                <ColumnDefinition Width=".4*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0"  Text="{Binding  ID}"/>
-                            <Label Grid.Column="1"  Text="{Binding  DATE, StringFormat='{0:dd.MM.yy}'}" />
-                            <Label Grid.Column="2"  Text="{Binding  NAME}" LineBreakMode="TailTruncation"/>
-                            <Label Grid.Column="3"  Text="{Binding  ADDRESS}" />
+                            <Label Grid.Column="0"  Text="{Binding  DATE, StringFormat='{0:dd.MM.yy}'}" />
+                            <Label Grid.Column="1"  Text="{Binding  NAME}" LineBreakMode="TailTruncation"/>
+                            <Label Grid.Column="2"  Text="{Binding  ADDRESS}" />
 
                         </Grid>
                     </DataTemplate>

@@ -23,6 +23,5 @@ namespace ProjectNE
             App.database.DeleteTables();
         }
 
-
     }
 }
