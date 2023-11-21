@@ -47,7 +47,6 @@
             <StackLayout IsVisible="{Binding IsEditFrameVisible}" Spacing="10" Padding="5">
                 <Entry Text="{Binding Name}" Placeholder="Наименование"/>
                 <Entry Text="{Binding Quantity}" Placeholder="Количество" />
-                <Entry Text="{Binding Price}" Placeholder="Цена (*,*)"/>
                 <Button Text="Изменить" Command="{Binding EditCommand}"/>
             </StackLayout>
 
@@ -62,8 +61,6 @@
                             <Label Grid.Column="0"  Text="ДАТА" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" />
                             <Label Grid.Column="1"  Text="НАИМЕНОВАНИЕ" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"/>
                             <Label Grid.Column="2"  Text="КОЛ-ВО"  FontAttributes="Bold"    HorizontalOptions="CenterAndExpand"/>
-                            <!--<Label Grid.Column="4"  Text="ЦЕНА"  FontAttributes="Bold"   WidthRequest="100"/>
-                            <Label Grid.Column="5"  Text="ИТОГО"   HorizontalOptions="End" FontAttributes="Bold" WidthRequest="200"/>-->
                         </Grid>
                     </CollectionView.Header>
 

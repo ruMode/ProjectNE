@@ -104,7 +104,11 @@ namespace ProjectNE.ViewModels
                     Warehouse newItem = new();
                     newItem.NAME = Name;
                     //newItem.PRICE = double.Parse(Price);
-                    newItem.QUANTITY = int.Parse(Quantity);
+                    try { 
+                    
+                        newItem.QUANTITY = int.Parse(Quantity);
+                    }
+                    catch (Exception exc) { await App.Current.MainPage.DisplayAlert("Error", exc.Message, "Ok"); return;}
                     newItem.DATE = DateTime.Now;
 
                     await App.database.SaveWarehouseItemAsync(newItem);
@@ -126,7 +130,11 @@ namespace ProjectNE.ViewModels
         {
             SelectedItem.NAME = Name;
             //SelectedItem.PRICE = double.Parse(Price);
-            SelectedItem.QUANTITY = int.Parse(Quantity);
+            try
+            {
+                SelectedItem.QUANTITY = int.Parse(Quantity);
+            }
+            catch (Exception ex) { await App.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok"); return; }
             SelectedItem.DATE = DateTime.Now;
 
 
