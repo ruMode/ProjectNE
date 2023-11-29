@@ -54,6 +54,8 @@
             </CollectionView>
             <Label x:DataType="vm:OrdersPageVM" Text="{Binding SelectedItem.SUM, StringFormat='ИТОГО: {0:#,#.00}'}" 
                    HorizontalOptions="End" FontAttributes="Bold" TextDecorations="Underline" FontSize="20"/>
+            
+            <Button Text="Распечатать" Command="{Binding PrintCommand}" WidthRequest="150" IsEnabled="{Binding IsItemSelected}"/>
             <Button Text="Назад" Command="{Binding GoBackCommand}"/>
         </VerticalStackLayout>
     </ScrollView>

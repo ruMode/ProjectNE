@@ -15,7 +15,7 @@
                         <VisualState x:Name="Normal" />
                         <VisualState x:Name="Selected">
                             <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="LightYellow"/>
+                                <Setter Property="BackgroundColor" Value="#ceff1d"/>
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
@@ -34,8 +34,10 @@
 
             <HorizontalStackLayout Spacing="20" HorizontalOptions="CenterAndExpand" x:DataType="vm:OrdersPageVM">
                 <Button Text="Добавить" Command="{Binding ShowAddFrameCommand}" WidthRequest="150"/>
-                <Button Text="Инфо" Command="{Binding ShowOrderInfoCommand}" WidthRequest="150" IsEnabled="{Binding IsItemSelected}"/>
+                <Button Text="Подробнее" Command="{Binding ShowOrderInfoCommand}" WidthRequest="150" IsEnabled="{Binding IsItemSelected}"/>
                 <Button Text="Удалить" Command="{Binding DeleteCommand}" WidthRequest="150" IsEnabled="{Binding IsItemSelected}"/>
+                <Button Text="Распечатать" Command="{Binding PrintCommand}" WidthRequest="150" IsEnabled="{Binding IsItemSelected}"/>
+                
             </HorizontalStackLayout>
 
             <StackLayout IsVisible="{Binding IsAddFrameVisible}" Spacing="10" Padding="5">
