@@ -2,13 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using ProjectNE.Models;
-using ProjectNE.Views;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+//using Excel = Microsoft.Office.Interop.Excel;
+using OfficeOpenXml;
+using CommunityToolkit.Maui.Storage;
+using Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts;
+using CommunityToolkit.Maui.Core.Primitives;
 
 namespace ProjectNE.ViewModels
 {
@@ -22,7 +22,7 @@ namespace ProjectNE.ViewModels
             StockItemsList = new ObservableCollection<Warehouse>();
             WarehouseItemsList = App.database.GetWarehouseItemsAsync().Result;
             OrderItemsList = new ObservableCollection<OrderItems>();
-            Date = DateTime.Now;
+            //Date = DateTime.Now;
 
             if (App.database.GetOrdersAsync().Result != null)
             {
@@ -229,7 +229,6 @@ namespace ProjectNE.ViewModels
         [RelayCommand]
         private async void ShowOrderInfo()
         {
-            
             await Shell.Current.GoToAsync("///orderDetails", true);
         }
 
@@ -243,7 +242,7 @@ namespace ProjectNE.ViewModels
             {
                 Title = SelectedItem.TITLE;
                 Customer_name = SelectedItem.CUSTOMER_NAME;
-                
+                Date = SelectedItem.DATE;
                 OrderItemsList = JsonConvert.DeserializeObject<ObservableCollection<OrderItems>>(SelectedItem.ITEMS_JSON);
 
 
@@ -343,5 +342,62 @@ namespace ProjectNE.ViewModels
         private async void GoBack() => await Shell.Current.GoToAsync("///orders");
 
 
+        [RelayCommand]
+        private async void Print()
+        {
+            //Excel.Application excellApp = new();
+            
+            string templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "Накладные\\", "Товарно-транспортная накладная шаблон.xlsx");
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "Накладные\\", "ТТН - " + $"{Title}" + ".xlsx");
+
+            if (File.Exists(filePath))
+            {
+                System.Diagnostics.Process.Start("explorer.exe", filePath);
+                return;
+            }
+            else
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            
+                try
+                {
+                    var package = new ExcelPackage(templatePath);
+                    var worksheet = package.Workbook.Worksheets[0];
+                
+                    worksheet.Cells["G9"].Value = "VITA LINA";
+                    worksheet.Cells["G11"].Value = Customer_name;
+                    worksheet.Cells["F13"].Value = "VITA LINA";
+                    worksheet.Cells["AL6"].Value = SelectedItem.ID;
+                    worksheet.Cells["AL7"].Value = Date.Day;
+                    worksheet.Cells["AN7"].Value = Date.Month;
+                    worksheet.Cells["AP7"].Value = Date.Year;
+
+                    for (int i = 0; i < OrderItemsList.Count; i++)
+                    {
+                        worksheet.Cells[18 + i, 11].Value = OrderItemsList[i].QUANTITY;
+                        worksheet.Cells[18 + i, 14].Value = OrderItemsList[i].PRICE;
+                        worksheet.Cells[18 + i, 18].Value = OrderItemsList[i].NAME;
+                    }
+                    string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Накладные");
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path);
+                        package.SaveAs(filePath);
+                    }
+                    else package.SaveAs(filePath);
+
+                    worksheet.Dispose();
+                    package.Workbook.Dispose();
+                    package.Dispose();
+
+                    if(await App.Current.MainPage.DisplayAlert("Success!", "Файл успешно создан! \nОткрыть?", "ok", "no"))
+                    {
+                        System.Diagnostics.Process.Start("explorer.exe", filePath);
+                    }
+                
+                }
+                catch (Exception ex) { await App.Current.MainPage.DisplayAlert("error", ex.Message, "ok"); }
+            }
+        }
     }
 }
