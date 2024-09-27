@@ -12,8 +12,8 @@ namespace ProjectNE.Services
     {
         public static MailMessage CreateMail(string subject, string body)
         {
-            var from = new MailAddress("create.the.adress@gmail.com", "Company name");
-            var to = new MailAddress("companies.reports@mail.ru");
+            var from = new MailAddress("email", "Company name");
+            var to = new MailAddress("email");
             var mail = new MailMessage(from, to);
 
             mail.Subject = subject;
@@ -25,7 +25,7 @@ namespace ProjectNE.Services
         public static void SendMail( MailMessage mail)
         {
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-            smtpClient.Credentials= new NetworkCredential("create.the.adress@gmail.com", "eysgtbadvteylrql");
+            smtpClient.Credentials= new NetworkCredential("email", "");
             smtpClient.EnableSsl= true;
             smtpClient.Send(mail);
         }
